@@ -1,0 +1,531 @@
+[
+  {
+    "id": "_pb_users_auth_",
+    "name": "users",
+    "type": "auth",
+    "system": false,
+    "schema": [
+      {
+        "id": "users_name",
+        "name": "name",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "users_avatar",
+        "name": "avatar",
+        "type": "file",
+        "system": false,
+        "required": false,
+        "options": {
+          "maxSelect": 1,
+          "maxSize": 5242880,
+          "mimeTypes": [
+            "image/jpg",
+            "image/jpeg",
+            "image/png",
+            "image/svg+xml",
+            "image/gif",
+            "image/webp"
+          ],
+          "thumbs": null
+        }
+      }
+    ],
+    "indexes": [
+      "CREATE INDEX `__pb_users_auth__created_idx` ON `users` (`created`)"
+    ],
+    "listRule": "id = @request.auth.id",
+    "viewRule": "id = @request.auth.id",
+    "createRule": "",
+    "updateRule": "id = @request.auth.id",
+    "deleteRule": "id = @request.auth.id",
+    "options": {
+      "allowEmailAuth": true,
+      "allowOAuth2Auth": true,
+      "allowUsernameAuth": true,
+      "exceptEmailDomains": null,
+      "manageRule": null,
+      "minPasswordLength": 8,
+      "onlyEmailDomains": null,
+      "requireEmail": false
+    }
+  },
+  {
+    "id": "f3i45tvhw0n4gcj",
+    "name": "roadmaps_likes",
+    "type": "view",
+    "system": false,
+    "schema": [
+      {
+        "id": "hrrygf5m",
+        "name": "likes",
+        "type": "number",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "options": {
+      "query": "SELECT\n  roadmap as id,\n  count(*) as likes\nFROM likes\nGROUP BY roadmap"
+    }
+  },
+  {
+    "id": "fkgdxkoybwbejpq",
+    "name": "roadmaps_chart",
+    "type": "view",
+    "system": false,
+    "schema": [
+      {
+        "id": "yoycpfgf",
+        "name": "created_date",
+        "type": "json",
+        "system": false,
+        "required": false,
+        "options": {}
+      },
+      {
+        "id": "vvay9wew",
+        "name": "created_count",
+        "type": "number",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "options": {
+      "query": "SELECT id, DATE(created) AS created_date, COUNT(*) AS created_count\nFROM roadmaps\nGROUP BY created_date\nORDER BY created_date DESC;"
+    }
+  },
+  {
+    "id": "99gk9s2xx0ucuj4",
+    "name": "roadmaps_extra",
+    "type": "view",
+    "system": false,
+    "schema": [
+      {
+        "id": "0xlgnyew",
+        "name": "title",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "kldml0ef",
+        "name": "code",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "ufrmfmdy",
+        "name": "category",
+        "type": "relation",
+        "system": false,
+        "required": false,
+        "options": {
+          "collectionId": "52w0ai1qxoxkm3z",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": []
+        }
+      },
+      {
+        "id": "dkvcare5",
+        "name": "verified",
+        "type": "bool",
+        "system": false,
+        "required": false,
+        "options": {}
+      },
+      {
+        "id": "57mbblug",
+        "name": "likes",
+        "type": "number",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "options": {
+      "query": "SELECT r.id, r.title, r.code, r.category, r.verified, r.created, COUNT(l.roadmap) AS likes\nFROM roadmaps AS r\nLEFT JOIN likes AS l ON r.id = l.roadmap\nGROUP BY r.id"
+    }
+  },
+  {
+    "id": "vexwyqcdny4i6b0",
+    "name": "roadmaps_recents",
+    "type": "view",
+    "system": false,
+    "schema": [
+      {
+        "id": "0xlgnyew",
+        "name": "title",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "kldml0ef",
+        "name": "code",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "ufrmfmdy",
+        "name": "category",
+        "type": "relation",
+        "system": false,
+        "required": false,
+        "options": {
+          "collectionId": "52w0ai1qxoxkm3z",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": []
+        }
+      },
+      {
+        "id": "dkvcare5",
+        "name": "verified",
+        "type": "bool",
+        "system": false,
+        "required": false,
+        "options": {}
+      },
+      {
+        "id": "4fie3mlo",
+        "name": "likes",
+        "type": "number",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "options": {
+      "query": "SELECT r.id, r.title, r.code, r.category, r.verified, r.created, COUNT(l.roadmap) AS likes \nFROM roadmaps AS r \nLEFT JOIN likes AS l ON r.id = l.roadmap\nWHERE r.verified = 1 \nGROUP BY r.id \nORDER BY r.created DESC \nLIMIT 20;"
+    }
+  },
+  {
+    "id": "c1rtftpnhrcdfo0",
+    "name": "categories_extra",
+    "type": "view",
+    "system": false,
+    "schema": [
+      {
+        "id": "nfrypyyt",
+        "name": "title",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "dkzsmnzk",
+        "name": "slug",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "4h5iy9n8",
+        "name": "category_index",
+        "type": "number",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null
+        }
+      },
+      {
+        "id": "xxyrgdio",
+        "name": "roadmap_count",
+        "type": "number",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "options": {
+      "query": "SELECT categories.id,categories.title, categories.slug, categories.category_index, COUNT(roadmaps.id) AS roadmap_count \nFROM categories \nLEFT JOIN roadmaps ON categories.id = roadmaps.category \nGROUP BY categories.id\nORDER BY roadmap_count DESC"
+    }
+  },
+  {
+    "id": "52w0ai1qxoxkm3z",
+    "name": "categories",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "id": "nfrypyyt",
+        "name": "title",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "dkzsmnzk",
+        "name": "slug",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "4h5iy9n8",
+        "name": "category_index",
+        "type": "number",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null
+        }
+      }
+    ],
+    "indexes": [
+      "CREATE INDEX `_52w0ai1qxoxkm3z_created_idx` ON `categories` (`created`)",
+      "CREATE UNIQUE INDEX `idx_SZ2Kk5j` ON `categories` (`slug`)"
+    ],
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "options": {}
+  },
+  {
+    "id": "m8xuj465cnmtf1b",
+    "name": "likes",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "id": "pjzv66fi",
+        "name": "client_ip",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "3tqflznx",
+        "name": "roadmap",
+        "type": "relation",
+        "system": false,
+        "required": false,
+        "options": {
+          "collectionId": "6mc65znk2xu28pn",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": []
+        }
+      }
+    ],
+    "indexes": [
+      "CREATE INDEX `_m8xuj465cnmtf1b_created_idx` ON `likes` (`created`)",
+      "CREATE INDEX `idx_3qXZ4se` ON `likes` (`roadmap`)",
+      "CREATE INDEX `idx_rM1tuR3` ON `likes` (\n  `client_ip`,\n  `roadmap`\n)"
+    ],
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "options": {}
+  },
+  {
+    "id": "6mc65znk2xu28pn",
+    "name": "roadmaps",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "id": "ajhbetch",
+        "name": "prompt",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "0xlgnyew",
+        "name": "title",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "ufrmfmdy",
+        "name": "category",
+        "type": "relation",
+        "system": false,
+        "required": false,
+        "options": {
+          "collectionId": "52w0ai1qxoxkm3z",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": []
+        }
+      },
+      {
+        "id": "kldml0ef",
+        "name": "code",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "vgdl90xz",
+        "name": "data",
+        "type": "json",
+        "system": false,
+        "required": false,
+        "options": {}
+      },
+      {
+        "id": "dkvcare5",
+        "name": "verified",
+        "type": "bool",
+        "system": false,
+        "required": false,
+        "options": {}
+      },
+      {
+        "id": "y9tdk9e8",
+        "name": "generate_time",
+        "type": "number",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null
+        }
+      }
+    ],
+    "indexes": [
+      "CREATE INDEX `_6mc65znk2xu28pn_created_idx` ON `roadmaps` (`created`)",
+      "CREATE UNIQUE INDEX `idx_kBNcShR` ON `roadmaps` (`code`)",
+      "CREATE INDEX `idx_4ccXHSj` ON `roadmaps` (`category`)",
+      "CREATE INDEX `idx_FbLnmFh` ON `roadmaps` (`verified`)",
+      "CREATE INDEX `idx_keT0h64` ON `roadmaps` (`title`)"
+    ],
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "options": {}
+  }
+]
